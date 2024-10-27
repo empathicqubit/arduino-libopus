@@ -26,6 +26,19 @@ This project contains
 - [libogg](https://xiph.org/ogg/)
 - [liboggz](https://www.xiph.org/oggz/)
 
+## Note about this fork (empathicqubit)
+
+There are separate definitions for alloc/free in ogg/os_types.h which point to
+extram_alloc/extram_free functions. If you don't want to do that, don't use this
+library. This is to put one memory-intensive allocation on external memory without
+slowing everything down.
+
+There are some lines commented out in framing.c to prevent crashes when decoding
+theora frames (There may be something else wrong here that I overlooked).
+As a consequence, seeking does not work correctly. Seeking forward requires that
+you process the frames between now and your destination. Seeking backwards is
+very expensive unless you make your own marks, because you will have to reparse
+the entire file up to that point. This is an acceptable tradeoff for me.
 
 ## Installation in Arduino
 

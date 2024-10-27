@@ -23,6 +23,12 @@
 #define _ogg_realloc realloc
 #define _ogg_free    free
 
+/* These are a second set of defines for memory-intensive areas */
+#define _theora_malloc  extram_malloc
+#define _theora_calloc  extram_calloc
+#define _theora_realloc extram_realloc
+#define _theora_free    extram_free
+
 #if defined(_WIN32)
 
 #  if defined(__CYGWIN__)

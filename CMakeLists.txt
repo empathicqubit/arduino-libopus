@@ -15,7 +15,5 @@ add_library (arduino_libopus ${SRC_LIST_C})
 # prevent compile errors
 target_compile_options(arduino_libopus PRIVATE -DARDUINO -DHAVE_CONFIG_H)
 
-
 # define location for header files
 target_include_directories(arduino_libopus PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src  )
-

@@ -136,7 +136,7 @@ int ogg_stream_init(ogg_stream_state *os,int serialno){
     os->body_storage=16*1024;
     os->lacing_storage=1024;
 
-    os->body_data=_ogg_malloc(os->body_storage*sizeof(*os->body_data));
+    os->body_data=_theora_malloc(os->body_storage*sizeof(*os->body_data));
     os->lacing_vals=_ogg_malloc(os->lacing_storage*sizeof(*os->lacing_vals));
     os->granule_vals=_ogg_malloc(os->lacing_storage*sizeof(*os->granule_vals));
 
@@ -161,7 +161,7 @@ int ogg_stream_check(ogg_stream_state *os){
 /* _clear does not free os, only the non-flat storage within */
 int ogg_stream_clear(ogg_stream_state *os){
   if(os){
-    if(os->body_data)_ogg_free(os->body_data);
+    if(os->body_data)_theora_free(os->body_data);
     if(os->lacing_vals)_ogg_free(os->lacing_vals);
     if(os->granule_vals)_ogg_free(os->granule_vals);
 
@@ -191,7 +191,7 @@ static int _os_body_expand(ogg_stream_state *os,long needed){
     }
     body_storage=os->body_storage+needed;
     if(body_storage<LONG_MAX-1024)body_storage+=1024;
-    ret=_ogg_realloc(os->body_data,body_storage*sizeof(*os->body_data));
+    ret=_theora_realloc(os->body_data,body_storage*sizeof(*os->body_data));
     if(!ret){
       ogg_stream_clear(os);
       return -1;
@@ -604,7 +604,7 @@ char *ogg_sync_buffer(ogg_sync_state *oy, long size){
       ogg_sync_clear(oy);
       return NULL;
     }
-    newsize=size+oy->fill+4096; /* an extra page to be nice */
+    newsize=size+oy->fill; /* an extra page to be nice */
     if(oy->data)
       ret=_ogg_realloc(oy->data,newsize);
     else
@@ -864,7 +864,7 @@ int ogg_stream_pagein(ogg_stream_state *os, ogg_page *og){
     while(segptr<segments){
       int val=header[27+segptr];
       os->lacing_vals[os->lacing_fill]=val;
-      os->granule_vals[os->lacing_fill]=-1;
+      //os->granule_vals[os->lacing_fill]=-1;
 
       if(bos){
         os->lacing_vals[os->lacing_fill]|=0x100;
@@ -881,7 +881,7 @@ int ogg_stream_pagein(ogg_stream_state *os, ogg_page *og){
 
     /* set the granulepos on the last granuleval of the last full packet */
     if(saved!=-1){
-      os->granule_vals[saved]=granulepos;
+      //os->granule_vals[saved]=granulepos;
     }
 
   }
